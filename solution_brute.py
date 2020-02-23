@@ -1,13 +1,12 @@
 from operator import itemgetter
 from math import inf, ceil
+import sys
 data = []
 nb_books = 0
 nb_libraries = 0
 nb_days = 0
 books = []
 libraries = []
-
-test_case = 'f'
 
 class Library:
     def __init__(self, nb_books, signup_time, books_per_day):
@@ -16,7 +15,7 @@ class Library:
         self.books_per_day = books_per_day
     
 
-with open(test_case+'.txt', 'r') as inputs:
+with open(sys.argv[4] + '.txt', 'r') as inputs:
     tmp = inputs.readline().strip("\n").split(" ")
     nb_books = int(tmp[0])
     nb_libraries = int(tmp[1])
@@ -94,7 +93,7 @@ for i in range(len(libraries)):
     else:
         busy = ceil(libraries[i].nb_books/libraries[i].books_per_day)
         tmp_busy = (busy-min_busy)/(max_busy-min_busy)
-    lib_scores.append([i,  0.09*tmp_score+1*tmp_signup+0.15*tmp_busy])
+    lib_scores.append([i,  float(sys.argv[1])*tmp_score+float(sys.argv[2])*tmp_signup+float(sys.argv[3])*tmp_busy])
 
 
 
@@ -115,7 +114,6 @@ signup_counter = 0
 for i in range(len(final_libs)):
     signup_counter += libraries[final_libs[i]].signup_time
     time_left = nb_days - signup_counter
-    print(time_left)
     tmp_values = []
     tmp_books = libraries[final_libs[i]].books
     for j in range(len(tmp_books)):
@@ -140,5 +138,5 @@ for i in range(len(final_libs)):
 
 result = [f"{len(final_libs)}\n"] + [(f"{final_libs[i]} {libraries[final_libs[i]].nb_books}\n"+final_books[i]+"\n") for i in range(len(final_libs))]
 
-with open(test_case+'10.out', 'w') as output:
+with open('./brute_force_files/' + sys.argv[4] + '.out', 'w') as output:
     output.writelines(result)
